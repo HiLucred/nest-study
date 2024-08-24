@@ -1,13 +1,19 @@
 import { PaginationParams } from '@/core/repositories/pagination-params'
 import { Answer } from '../../enterprise/entities/answer'
+import { AnswerWithAuthor } from '../../enterprise/entities/value-objects/answer-with-author'
 
-export interface AnswersRepository {
-  create(answer: Answer): Promise<void>
-  save(answer: Answer): Promise<void>
-  delete(answer: Answer): Promise<void>
-  findById(answerId: string): Promise<Answer | null>
-  findManyByQuestionId(
+export abstract class AnswersRepository {
+  abstract create(answer: Answer): Promise<void>
+  abstract save(answer: Answer): Promise<void>
+  abstract delete(answer: Answer): Promise<void>
+  abstract findById(answerId: string): Promise<Answer | null>
+  abstract findManyByQuestionId(
     questionId: string,
     { page }: PaginationParams,
   ): Promise<Answer[]>
+
+  abstract findManyByQuestionIdWithAuthor(
+    questionId: string,
+    { page }: PaginationParams,
+  ): Promise<AnswerWithAuthor[]>
 }

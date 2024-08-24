@@ -2,6 +2,7 @@ import { UniqueEntityId } from '@/core/entities/unique-entity-id'
 import { QuestionComment } from '../../enterprise/entities/question-comment'
 import { QuestionCommentsRepository } from '../repositories/question-comments-repository'
 import { Either, right } from '@/core/either'
+import { Injectable } from '@nestjs/common'
 
 interface CommentOnQuestionUseCaseRequest {
   questionId: string
@@ -16,6 +17,7 @@ type CommentOnQuestionUseCaseResponse = Either<
   }
 >
 
+@Injectable()
 export class CommentOnQuestionUseCase {
   constructor(private questionCommentRepository: QuestionCommentsRepository) {}
 

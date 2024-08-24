@@ -7,10 +7,11 @@ import { QuestionAttachmentsRepository } from '../repositories/question-attachme
 import { QuestionAttachmentList } from '../../enterprise/entities/question-attachment-list'
 import { QuestionAttachment } from '../../enterprise/entities/question-attachment'
 import { UniqueEntityId } from '@/core/entities/unique-entity-id'
+import { Injectable } from '@nestjs/common'
 
 interface EditQuestionUseCaseRequest {
-  questionId: string
   authorId: string
+  questionId: string
   title: string
   content: string
   attachmentsIds: string[]
@@ -23,6 +24,7 @@ type EditQuestionUseCaseResponse = Either<
   }
 >
 
+@Injectable()
 export class EditQuestionUseCase {
   constructor(
     private questionRepository: QuestionsRepository,
@@ -53,18 +55,20 @@ export class EditQuestionUseCase {
       currentQuestionAttachments,
     )
 
-    const attachments = attachmentsIds.map((attachmentId) => {
+    const questionAttachments = attachmentsIds.map((attachmentId) => {
       return QuestionAttachment.create({
         attachmentId: new UniqueEntityId(attachmentId),
-        questionId: new UniqueEntityId(questionId),
+        questionId: question.id,
       })
     })
 
-    questionAttachmentList.update(attachments)
+    questionAttachmentList.update(questionAttachments)
 
     question.title = title
     question.content = content
     question.attachments = questionAttachmentList
+
+    await this.questionRepository.save(question)
 
     return right({ question })
   }

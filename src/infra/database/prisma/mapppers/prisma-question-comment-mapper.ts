@@ -12,9 +12,9 @@ export class PrismaQuestionCommentMapper {
 
     return QuestionComment.create(
       {
-        questionId: new UniqueEntityId(prismaQuestionComment.questionId),
-        authorId: new UniqueEntityId(prismaQuestionComment.authorId),
         content: prismaQuestionComment.content,
+        authorId: new UniqueEntityId(prismaQuestionComment.authorId),
+        questionId: new UniqueEntityId(prismaQuestionComment.questionId),
         createdAt: prismaQuestionComment.createdAt,
         updateAt: prismaQuestionComment.updateAt,
       },
@@ -23,15 +23,15 @@ export class PrismaQuestionCommentMapper {
   }
 
   static toPrisma(
-    answercomment: QuestionComment,
+    questionComment: QuestionComment,
   ): Prisma.CommentUncheckedCreateInput {
     return {
-      id: answercomment.id.toString(),
-      authorId: answercomment.authorId.toString(),
-      questionId: answercomment.questionId.toString(),
-      content: answercomment.content,
-      createdAt: answercomment.createdAt,
-      updateAt: answercomment.updateAt,
+      id: questionComment.id.toString(),
+      authorId: questionComment.authorId.toString(),
+      questionId: questionComment.questionId.toString(),
+      content: questionComment.content,
+      createdAt: questionComment.createdAt,
+      updateAt: questionComment.updateAt,
     }
   }
 }

@@ -5,37 +5,73 @@ import { PrismaAnswerCommentsRepository } from './prisma/repositories/prisma-ans
 import { PrismaAnswersRepository } from './prisma/repositories/prisma-answers-repository'
 import { PrismaQuestionsRepository } from './prisma/repositories/prisma-questions-repository'
 import { PrismaQuestionAttachmentsRepository } from './prisma/repositories/prisma-question-attachments-repository'
-import { PrismaQuestionsCommentsRepository } from './prisma/repositories/prisma-question-comments-repository'
+import { PrismaQuestionCommentsRepository } from './prisma/repositories/prisma-question-comments-repository'
 import { QuestionsRepository } from '@/domain/forum/application/repositories/questions-repository'
 import { StudentsRepository } from '@/domain/forum/application/repositories/students-repository'
 import { PrismaStudentsRepository } from './prisma/repositories/prisma-students-repository'
+import { QuestionAttachmentsRepository } from '@/domain/forum/application/repositories/question-attachments-repository'
+import { QuestionCommentsRepository } from '@/domain/forum/application/repositories/question-comments-repository'
+import { AnswerCommentsRepository } from '@/domain/forum/application/repositories/answer-comments-repository'
+import { AnswerAttachmentsRepository } from '@/domain/forum/application/repositories/answer-attachments-repository'
+import { AnswersRepository } from '@/domain/forum/application/repositories/answers-repository'
+import { AttachmentsRepository } from '@/domain/forum/application/repositories/attachments-repository'
+import { PrismaAttachmentsRepository } from './prisma/repositories/prisma-attachments-repository'
+import { NotificationsRepository } from '@/domain/notification/application/repositories/notification-repository'
+import { PrismaNotificationsRepository } from './prisma/repositories/prisma-notifications-repository'
+import { CacheModule } from '../cache/cache.module'
 
 @Module({
+  imports: [CacheModule],
   providers: [
     PrismaService,
-    PrismaAnswersRepository,
-    PrismaAnswerAttachmentsRepository,
-    PrismaAnswerCommentsRepository,
+    {
+      provide: AnswersRepository,
+      useClass: PrismaAnswersRepository,
+    },
+    {
+      provide: AnswerAttachmentsRepository,
+      useClass: PrismaAnswerAttachmentsRepository,
+    },
+    {
+      provide: AnswerCommentsRepository,
+      useClass: PrismaAnswerCommentsRepository,
+    },
     {
       provide: QuestionsRepository,
       useClass: PrismaQuestionsRepository,
     },
-    PrismaQuestionAttachmentsRepository,
-    PrismaQuestionsCommentsRepository,
+    {
+      provide: QuestionAttachmentsRepository,
+      useClass: PrismaQuestionAttachmentsRepository,
+    },
+    {
+      provide: QuestionCommentsRepository,
+      useClass: PrismaQuestionCommentsRepository,
+    },
     {
       provide: StudentsRepository,
       useClass: PrismaStudentsRepository,
     },
+    {
+      provide: AttachmentsRepository,
+      useClass: PrismaAttachmentsRepository,
+    },
+    {
+      provide: NotificationsRepository,
+      useClass: PrismaNotificationsRepository,
+    },
   ],
   exports: [
     PrismaService,
-    PrismaAnswersRepository,
-    PrismaAnswerAttachmentsRepository,
-    PrismaAnswerCommentsRepository,
+    AnswersRepository,
+    AnswerAttachmentsRepository,
+    AnswerCommentsRepository,
     QuestionsRepository,
     StudentsRepository,
-    PrismaQuestionAttachmentsRepository,
-    PrismaQuestionsCommentsRepository,
+    QuestionAttachmentsRepository,
+    QuestionCommentsRepository,
+    AttachmentsRepository,
+    NotificationsRepository,
   ],
 })
 export class DatabaseModule {}

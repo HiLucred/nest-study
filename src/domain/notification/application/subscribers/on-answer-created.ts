@@ -3,7 +3,9 @@ import { EventHandler } from '@/core/events/domain-handler'
 import { AnswerCreatedEvent } from '@/domain/forum/enterprise/events/answer-created-event'
 import { SendNotificationUseCase } from '../use-cases/send-notification'
 import { QuestionsRepository } from '@/domain/forum/application/repositories/questions-repository'
+import { Injectable } from '@nestjs/common'
 
+@Injectable()
 export class OnAnswerCreate implements EventHandler {
   constructor(
     private questionsRepository: QuestionsRepository,

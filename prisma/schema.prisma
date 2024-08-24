@@ -13,14 +13,15 @@ enum UserRole {
 }
 
 model User {
-  id        String     @unique @default(uuid())
-  name      String
-  email     String     @unique
-  password  String
-  questions Question[]
-  role      UserRole   @default(STUDENT)
-  answers   Answer[]
-  comments  Comment[]
+  id           String         @unique @default(uuid())
+  name         String
+  email        String         @unique
+  password     String
+  questions    Question[]
+  role         UserRole       @default(STUDENT)
+  answers      Answer[]
+  comments     Comment[]
+  notification Notification[]
 
   @@map("users")
 }
@@ -63,12 +64,12 @@ model Answer {
 
 model Comment {
   id         String    @id @default(uuid())
-  createdAt  DateTime  @default(now()) @map("created_at")
-  updateAt   DateTime? @updatedAt() @map("update_at")
   content    String
   authorId   String    @map("author_id")
   questionId String?   @map("question_id")
   answerId   String?   @map("answer_id")
+  createdAt  DateTime  @default(now()) @map("created_at")
+  updateAt   DateTime? @updatedAt() @map("update_at")
 
   author   User      @relation(fields: [authorId], references: [id])
   question Question? @relation(fields: [questionId], references: [id])
@@ -88,4 +89,17 @@ model Attachment {
   answer   Answer?   @relation(fields: [answerId], references: [id])
 
   @@map("attachments")
+}
+
+model Notification {
+  id        String    @id @default(uuid())
+  receiptId String    @map("receipt_id")
+  title     String
+  content   String
+  readAt    DateTime? @map("read_at")
+  createdAt DateTime  @default(now()) @map("created_at")
+
+  user User @relation(fields: [receiptId], references: [id])
+
+  @@map("notifications")
 }

@@ -31,7 +31,7 @@ Authorization: Bearer {{authToken}}
 
 {
   "title": "New Question 77",
-  "content": "Question content..."
+  "content": "Question content...",
 }
 
 ###
